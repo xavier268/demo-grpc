@@ -1,0 +1,25 @@
+syntax = "proto3" ;           // required
+package src ;                 // proto namespace, different from generated go package
+option go_package = "/auto";  // required - go package the is generated ...
+
+
+// The greeting service definition.
+service Greeter {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+   // Close server
+   rpc Bye (Empty)returns (Empty) {}
+  }
+  
+  // The request message containing the user's name.
+  message HelloRequest {
+     string name = 1;
+  }
+  
+  // The response message containing the greetings
+  message HelloReply {
+     string message = 1;
+  }
+
+  // Empty message.
+  message Empty {}
