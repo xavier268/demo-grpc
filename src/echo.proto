@@ -1,0 +1,22 @@
+syntax = "proto3" ;           // required
+package src ;                 // proto namespace, different from generated go package
+
+option go_package = "/auto";  // required - go package the is generated ...
+
+
+// The echo service definition.
+service Echo {
+    // Sends a greeting
+    rpc Ping () returns () {}
+   
+  }
+  
+  // The request message containing the user's name.
+  message HelloRequest {
+     string name = 1;
+  }
+  
+  // The response message containing the greetings
+  message HelloReply {
+     string message = 1;
+  }
