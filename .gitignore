@@ -19,3 +19,6 @@
 
 
 
+certif/service.csr
+certif/service.pem
+certif/ca.srl
