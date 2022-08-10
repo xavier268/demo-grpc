@@ -21,22 +21,31 @@ var (
 	port = flag.Int("port", 50051, "The server port")
 )
 
-// server is used to implement helloworld.GreeterServer.
-type server struct {
+// greetserver is used to implement helloworld.GreeterServer.
+type greetserver struct {
 	serv *grpc.Server // needs to access gloabl server to stop it !
 	auto.UnimplementedGreeterServer
 }
 
 // SayHello implements helloworld.GreeterServer
-func (s *server) SayHello(ctx context.Context, in *auto.HelloRequest) (*auto.HelloReply, error) {
+func (s *greetserver) SayHello(ctx context.Context, in *auto.HelloRequest) (*auto.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
 	return &auto.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
-func (s *server) Bye(ctx context.Context, _ *auto.Empty) (*auto.Empty, error) {
+func (s *greetserver) Bye(ctx context.Context, _ *auto.Empty) (*auto.Empty, error) {
 	log.Println("Server stop request received ...")
 	go s.serv.GracefulStop()
 	return &auto.Empty{}, nil
+}
+
+type echoserver struct {
+	auto.UnimplementedEchoServer
+}
+
+func (s *echoserver) Echo(ctx context.Context, ping *auto.Ping) (*auto.Pong, error) {
+	return &auto.Pong{Message: ping.Message}, nil
+
 }
 
 // Setup server credentials - no client authentication.
@@ -85,7 +94,8 @@ func main() {
 	}
 	// register services
 	globalServer := grpc.NewServer(grpc.Creds(GetTransportCredentialsClientAuth()))
-	auto.RegisterGreeterServer(globalServer, &server{serv: globalServer})
+	auto.RegisterGreeterServer(globalServer, &greetserver{serv: globalServer})
+	auto.RegisterEchoServer(globalServer, &echoserver{})
 	log.Printf("server listening at %v", lis.Addr())
 
 	// run server

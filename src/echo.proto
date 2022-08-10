@@ -6,17 +6,18 @@ option go_package = "/auto";  // required - go package the is generated ...
 
 // The echo service definition.
 service Echo {
-    // Sends a greeting
-    rpc Ping () returns () {}
+    // Sends a ping
+    rpc Echo (Ping) returns (Pong) {}
    
   }
   
-  // The request message containing the user's name.
-  message HelloRequest {
-     string name = 1;
-  }
   
-  // The response message containing the greetings
-  message HelloReply {
-     string message = 1;
-  }
+  message Ping {
+   string message = 1;
+}
+
+message Pong {
+   string message = 1;
+}
+
+
