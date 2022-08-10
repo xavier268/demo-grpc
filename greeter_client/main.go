@@ -104,11 +104,20 @@ func main() {
 		}
 	}
 	defer conn.Close()
-	c := auto.NewGreeterClient(conn)
 
-	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
+	c := auto.NewGreeterClient(conn)
+	p := auto.NewEchoClient(conn)
+
+	// ping the server
+	pong, err := p.Echo(ctx, &auto.Ping{Message: "pinging ..."})
+	if err != nil {
+		log.Fatalf("could not ping: %v", err)
+	}
+	log.Printf("pong received : %v", pong)
+	// Contact the server and print out its response.
 	r, err := c.SayHello(ctx, &auto.HelloRequest{Name: *name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)

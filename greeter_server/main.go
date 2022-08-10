@@ -44,6 +44,7 @@ type echoserver struct {
 }
 
 func (s *echoserver) Echo(ctx context.Context, ping *auto.Ping) (*auto.Pong, error) {
+	log.Printf("ping received : %v", ping)
 	return &auto.Pong{Message: ping.Message}, nil
 
 }
