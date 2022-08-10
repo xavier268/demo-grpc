@@ -7,9 +7,9 @@ import (
 	"crypto/x509"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net"
+	"os"
 
 	"github.com/xavier268/demo-grpc/auto"
 
@@ -57,7 +57,7 @@ func GetTransportCredentialsClientAuth() credentials.TransportCredentials {
 	}
 	// Load certificate authority
 	cp := x509.NewCertPool()
-	ca, err := ioutil.ReadFile("certif/ca.cert")
+	ca, err := os.ReadFile("certif/ca.cert")
 	if err != nil {
 		log.Fatalf("failed to load CA cert : %v", err)
 	}

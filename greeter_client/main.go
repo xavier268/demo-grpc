@@ -6,8 +6,8 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"flag"
-	"io/ioutil"
 	"log"
+	"os"
 	"time"
 
 	"github.com/xavier268/demo-grpc/auto"
@@ -28,7 +28,7 @@ var (
 
 // Communication will be encrypted with a server certificate valid for the provided CA authority certificate.
 func GetTlsConfigVerifiedProvided() *tls.Config {
-	b, _ := ioutil.ReadFile("certif/ca.cert") // ca authority certificate, needed to validate cert
+	b, _ := os.ReadFile("certif/ca.cert") // ca authority certificate, needed to validate cert
 	cp := x509.NewCertPool()
 	if !cp.AppendCertsFromPEM(b) {
 		panic("credentials: failed to append CA certificates to local cert pool")
@@ -66,7 +66,7 @@ func GetTlsConfigAuthenticatedClient() *tls.Config {
 
 	// Create a certificate pool from the certificate authority
 	cp := x509.NewCertPool()
-	ca, err := ioutil.ReadFile("certif/ca.cert")
+	ca, err := os.ReadFile("certif/ca.cert")
 	if err != nil {
 		log.Fatalf("could not read ca certificate: %s", err)
 	}
