@@ -23,7 +23,7 @@ func TestUnsafe(t *testing.T) {
 }
 
 func TestSecure(t *testing.T) {
-	go RunServer("")
+	go RunServer()
 	time.Sleep(2 * time.Second) // some time for server to start ...
 	err := RunClient("-unsafe") // should fail in secured mode
 	if err == nil {
