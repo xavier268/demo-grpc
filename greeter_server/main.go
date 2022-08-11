@@ -18,7 +18,8 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port   = flag.Int("port", 50051, "The server port")
+	unsafe = flag.Bool("unsafe", false, "Do not require any autehntication")
 )
 
 // greetserver is used to implement helloworld.GreeterServer.
@@ -87,14 +88,23 @@ func GetTransportCredentialsClientAuth() credentials.TransportCredentials {
 func main() {
 
 	flag.Parse()
-
 	// open connection
+
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	// register services
-	globalServer := grpc.NewServer(grpc.Creds(GetTransportCredentialsClientAuth()))
+	var globalServer *grpc.Server
+	if *unsafe {
+		globalServer = grpc.NewServer()
+		log.Printf("establishing insercure connection")
+	} else {
+		globalServer = grpc.NewServer(grpc.Creds(GetTransportCredentialsClientAuth()))
+		log.Printf("establishing encrypted, both-way certified, connection")
+
+	}
 	auto.RegisterGreeterServer(globalServer, &greetserver{serv: globalServer})
 	auto.RegisterEchoServer(globalServer, &echoserver{})
 	log.Printf("server listening at %v", lis.Addr())
@@ -102,5 +112,7 @@ func main() {
 	// run server
 	if err := globalServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
+	} else {
+		log.Println("Server successfully stoppped")
 	}
 }

@@ -21,9 +21,10 @@ const (
 )
 
 var (
-	addr = flag.String("addr", "localhost:50051", "the address to connect to")
-	name = flag.String("name", defaultName, "Name to greet")
-	bye  = flag.Bool("bye", false, "Request server to stop")
+	addr   = flag.String("addr", "localhost:50051", "the address to connect to")
+	name   = flag.String("name", defaultName, "Name to greet")
+	bye    = flag.Bool("bye", false, "Request server to stop")
+	unsafe = flag.Bool("unsafe", false, "Unsafe connection")
 )
 
 // Communication will be encrypted with a server certificate valid for the provided CA authority certificate.
@@ -94,15 +95,23 @@ func GetTlsConfigUnverified() *tls.Config {
 func main() {
 	flag.Parse()
 
+	var conn *grpc.ClientConn
+	var err error
+
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(credentials.NewTLS(GetTlsConfigAuthenticatedClient())))
-	if err != nil {
-		log.Printf("did not connect with credentials - try connecting without ...: %v", err)
+
+	if *unsafe {
 		conn, err = grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			log.Fatalf("did not connect even withoutcredentials - try connecting without ...: %v", err)
+			log.Fatalf("did not connect even withoutcredentials : %v", err)
+		}
+	} else {
+		conn, err = grpc.Dial(*addr, grpc.WithTransportCredentials(credentials.NewTLS(GetTlsConfigAuthenticatedClient())))
+		if err != nil {
+			log.Fatalf("did not connect with credentials - try unsafe flag ? : %v", err)
 		}
 	}
+
 	defer conn.Close()
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
