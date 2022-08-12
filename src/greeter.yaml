@@ -6,4 +6,9 @@ http:
   rules:
   - selector: src.Greeter.SayHello
     get: "/greeter/sayhello/{surname}/{name}"
+    additional_bindings:
+      - post: "/greeter/sayhello"
+        body: "*"
+  - selector: src.Greeter.Bye
+    get: "/bye"
   

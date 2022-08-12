@@ -7,4 +7,5 @@ Playground for grpc/protobuf
 * various authentication scheme with TLS ( none, server only, server and client ...) : unse -unsafe flag on cleint and/or server to test
 * end2end test with : got test -v .
 
-* (wip) autogenerate REST-to-grppc reverse proxy gateway
+* (wip) autogenerate REST-to-grppc reverse proxy gateway - see // see https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api#httprule
+

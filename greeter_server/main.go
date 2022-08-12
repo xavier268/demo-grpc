@@ -99,7 +99,7 @@ func main() {
 	var globalServer *grpc.Server
 	if *unsafe {
 		globalServer = grpc.NewServer()
-		log.Printf("establishing insercure connection")
+		log.Printf("establishing insecure connection")
 	} else {
 		globalServer = grpc.NewServer(grpc.Creds(GetTransportCredentialsClientAuth()))
 		log.Printf("establishing encrypted, both-way certified, connection")

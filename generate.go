@@ -7,6 +7,8 @@
 //go:generate bash -c "$( go env GOPATH )/bin/protoc-gen-go-grpc --version"
 //go:generate bash -c "export PATH=$PATH:$(go env GOPATH)/bin;protoc  --go_out=.  --go-grpc_out=. src/*.proto"
 
+// -- using unbounded metods -- go:generate bash -c "export PATH=$PATH:$(go env GOPATH)/bin;protoc  --grpc-gateway_out=. --grpc-gateway_opt generate_unbound_methods=true src/*.proto"
+//
 //go:generate bash -c "export PATH=$PATH:$(go env GOPATH)/bin;protoc  --grpc-gateway_out=. --grpc-gateway_opt grpc_api_configuration=src/greeter.yaml src/*.proto"
 //go:generate go mod tidy
 package main

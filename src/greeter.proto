@@ -2,7 +2,7 @@ syntax = "proto3" ;                    // required
 package src ;                          // proto namespace, different from generated go package
 import "src/utils.proto";              // test importing another proto
 
-option go_package = "/auto";  // required - go package the is generated ...
+option go_package = "/auto";  // required - go package for the generated golang code ...
 
 
 // The greeting service definition.
