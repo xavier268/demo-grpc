@@ -10,13 +10,13 @@ import (
 )
 
 func TestGRPCUnsafe(t *testing.T) {
-	go RunServer("-unsafe")
-	time.Sleep(2 * time.Second) // some time for server to start ...
-	err := RunClient("-bye")    // secured connection on unsecure server should fail ..
+	go RunGRPCServer("-unsafe")
+	time.Sleep(2 * time.Second)  // some time for server to start ...
+	err := RunGRPCClient("-bye") // secured connection on unsecure server should fail ..
 	if err == nil {
 		t.Fatal("secured connection to unsafe server should fail")
 	}
-	err = RunClient("-bye", "-unsafe")
+	err = RunGRPCClient("-bye", "-unsafe")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,13 +25,13 @@ func TestGRPCUnsafe(t *testing.T) {
 }
 
 func TestGRPCSecure(t *testing.T) {
-	go RunServer()
-	time.Sleep(2 * time.Second) // some time for server to start ...
-	err := RunClient("-unsafe") // should fail in secured mode
+	go RunGRPCServer()
+	time.Sleep(2 * time.Second)     // some time for server to start ...
+	err := RunGRPCClient("-unsafe") // should fail in secured mode
 	if err == nil {
 		t.Fatal("unsecure client should fail on secured server")
 	}
-	err = RunClient("-bye")
+	err = RunGRPCClient("-bye")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,8 +41,8 @@ func TestGRPCSecure(t *testing.T) {
 // ---------------- utilities --------------------
 
 func TestRESTGateway(t *testing.T) {
-	go RunServer("-unsafe")
-	go RunGateway()
+	go RunGRPCServer("-unsafe")
+	go RunRESTGateway()
 	time.Sleep(2 * time.Second) // some time for server to start ...
 
 	// send REST commands - valid command
@@ -73,7 +73,7 @@ func TestRESTGateway(t *testing.T) {
 
 }
 
-func RunServer(flags ...string) {
+func RunGRPCServer(flags ...string) {
 	args := []string{"run", "./greeter_server"}
 	args = append(args, flags...)
 	serv := exec.Command("go", args...)
@@ -85,7 +85,7 @@ func RunServer(flags ...string) {
 	}
 }
 
-func RunClient(flags ...string) error {
+func RunGRPCClient(flags ...string) error {
 	args := []string{"run", "./greeter_client"}
 	args = append(args, flags...)
 	serv := exec.Command("go", args...)
@@ -94,7 +94,7 @@ func RunClient(flags ...string) error {
 	return err
 }
 
-func RunGateway(flags ...string) {
+func RunRESTGateway(flags ...string) {
 	args := []string{"run", "./gateway"}
 	args = append(args, flags...)
 	serv := exec.Command("go", args...)
