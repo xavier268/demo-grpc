@@ -13,8 +13,8 @@ Grpc demonstrated features include :
 * various authentication scheme with TLS ( none, server only, server and client ...) : use -unsafe flag on client and/or server to test
 
 * autogenerate REST-to-grppc reverse proxy gateway - see // see https://cloud.google.com/endpoints/docs/grpc-service-config/reference/rpc/google.api#httprule
-    + the gateway accept REST connection and ats as a gateway with a grpc server, then retuning the grpc response in REST format.
-    + gateway CANNOT handle non-unray request (see documentation).
+    + the gateway accept REST connection and acts as a gateway with a grpc server, then retuning the grpc response in REST format.
+    + gateway CANNOT handle non-unary request (see documentation).
 
 An end-to-end test is provided :
 
