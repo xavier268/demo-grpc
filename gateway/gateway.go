@@ -26,7 +26,7 @@ func run() error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	// Register gRPC server endpoint with teh REST gateway
+	// Register gRPC server endpoint with the REST gateway
 	// Note: Make sure the gRPC server is already running properly and accessible
 	// Note: As per documentation, do not use the orher register functions, do not attempt non unary functions.
 	mux := runtime.NewServeMux()
@@ -37,6 +37,7 @@ func run() error {
 	}
 
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
+	// Note how the same mux can now be used as an http.Handler ...
 	server := &http.Server{Addr: "localhost:8080", Handler: mux}
 	go func() { // kill gateway after than 10 seconds, for testing purposes ...
 		time.Sleep(10 * time.Second)
