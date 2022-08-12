@@ -1,6 +1,6 @@
-syntax = "proto3" ;           // required
-package src ;                 // proto namespace, different from generated go package
-import "src/utils.proto";     // test importing another proto
+syntax = "proto3" ;                    // required
+package src ;                          // proto namespace, different from generated go package
+import "src/utils.proto";              // test importing another proto
 
 option go_package = "/auto";  // required - go package the is generated ...
 
@@ -8,7 +8,7 @@ option go_package = "/auto";  // required - go package the is generated ...
 // The greeting service definition.
 service Greeter {
     // Sends a greeting
-    rpc SayHello (HelloRequest) returns (HelloReply) {}
+    rpc SayHello (HelloRequest) returns (HelloReply) {    }
    // Close server
    rpc Bye (Empty)returns (Empty) {}
   }
@@ -16,6 +16,7 @@ service Greeter {
   // The request message containing the user's name.
   message HelloRequest {
      string name = 1;
+     string surname = 2;
   }
   
   // The response message containing the greetings

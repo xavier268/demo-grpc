@@ -6,3 +6,5 @@ Playground for grpc/protobuf
 * a service including triggering server stop,
 * various authentication scheme with TLS ( none, server only, server and client ...) : unse -unsafe flag on cleint and/or server to test
 * end2end test with : got test -v .
+
+* (wip) autogenerate REST-to-grppc reverse proxy gateway

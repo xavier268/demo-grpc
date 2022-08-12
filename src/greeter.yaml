@@ -1,0 +1,9 @@
+
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+  - selector: src.Greeter.SayHello
+    get: "/greeter/sayhello/{surname}/{name}"
+  
