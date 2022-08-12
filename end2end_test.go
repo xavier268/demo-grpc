@@ -60,10 +60,17 @@ func TestRESTGateway(t *testing.T) {
 	// send REST commands - bye command (does not stop gateway, only grpc server)
 	st, err = RunRESTClient("http://localhost:8080/bye")
 	if err != nil || st != http.StatusOK {
-		t.Fatal(err)
+		t.Fatal(st, err)
 	}
 
-	time.Sleep(2 * time.Second) // some time for server to stop ...
+	time.Sleep(1 * time.Second) // some time for GRPC server to stop ...
+
+	// send REST commands - valid command, will fail since grpc not running anymore, but gateway stil running.
+	st, err = RunRESTClient("http://localhost:8080/greeter/sayhello/xav/toto")
+	if err != nil || st != http.StatusServiceUnavailable {
+		t.Fatal(st, err)
+	}
+
 }
 
 func RunServer(flags ...string) {
