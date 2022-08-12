@@ -37,12 +37,15 @@ func run() error {
 	}
 
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	// Note how the same mux can now be used as an http.Handler ...
+	// Note how the same grpc mux is already a valid http.Handler !
+
+	// A  approach for testing - gateway stops after 10 seconds ...
 	server := &http.Server{Addr: "localhost:8080", Handler: mux}
 	go func() { // kill gateway after than 10 seconds, for testing purposes ...
 		time.Sleep(10 * time.Second)
 		server.Shutdown(ctx)
 	}()
+
 	return server.ListenAndServe()
 
 }
